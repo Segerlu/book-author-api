@@ -1,0 +1,58 @@
+body {
+    display: flex;
+}
+
+.areas {
+    
+    
+}
+
+.result-card {
+    border: black solid 1px;
+    padding:2em;
+    width: 100vh;
+    height: 15em;
+    position: relative;
+}
+
+.overlay {
+    width : 100%;
+    height : 100%;
+    z-index : 110;
+    opacity : .01;
+    top: 0;
+    left: 0;
+    position: absolute;
+}
+
+.menuSelection {
+    margin-bottom: 4em;
+    padding: 1em;
+    border: solid black 2px;
+}
+
+#bodyArea {
+    margin: 0% auto;
+    z-index: 0;
+}
+
+#searchArea {
+    margin-top: 5em;
+    z-index: 50;
+}
+
+#menuArea {
+    margin-top: 5em;
+    width: 15vh;
+    height: fit-content;
+    border: solid black 1px;
+}
+
+#results {
+    height: 80vh;
+    width: 100vh;
+    border: black 1px solid;
+    display: grid;
+    overflow-y: scroll;
+    z-index: 50;
+}

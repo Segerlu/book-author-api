@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <title>Document</title>
+</head>
+<body>
+    <div id="menuArea" class="areas">
+        <div id="authorSearch" class="menuSelection">Author Search</div>
+        <div id="bookSearch" class="menuSelection">Book Search</div>
+        <div id="addAuthor" class="menuSelection">Add Author</div>
+        <div id="addBook" class="menuSelection">Add Book</div>
+    </div>
+    <div id="bodyArea" class="areas">
+        <div id="searchArea" class="areas searchfield">
+            <label>Search For A Book</label>
+            <input id="searchBook" class="bookSearchfield searchfield">
+            <button id="searchBookButton" onclick="searchBooks()" class="bookSearchfield searchfield">SEARCH</button>
+            <label>Search For A Book</label>
+            <input id="searchAuthor" class="authorSearchfield searchfield">
+            <button id="searchAuthorButton" onclick="searchAuthors()" class="authorSearchfield searchfield">SEARCH</button>
+        </div>
+        <div id="results"></div>
+    </div>
+</body>
+<script src="index.js"></script>
+</html>
