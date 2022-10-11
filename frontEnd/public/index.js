@@ -93,8 +93,6 @@ function switchTab(tab) {
 
     tab === 'Author Search' ? showAuthors() :
         tab === 'Book Search' ? showBooks() :
-            tab === 'Add Author' ? showAddAuthor() :
-                tab === 'Add Book' ? showAddBook() :
                     tab === 'Home' ? showHome() : console.log(tab);
 
 }
