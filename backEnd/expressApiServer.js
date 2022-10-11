@@ -14,7 +14,7 @@ let { Client } = require('pg');
     // });
     
 const PORT = process.env.PORT //|| 8006;
-const CONNECT_STRING = process.env.CONNECT_STRING + 'SSL=true' //||'postgresql://postgres:docker@127.0.0.1:5432/booksauthorapidb' 
+const CONNECT_STRING = process.env.CONNECT_STRING //||'postgresql://postgres:docker@127.0.0.1:5432/booksauthorapidb' 
 
 let client = new Client(
     {
