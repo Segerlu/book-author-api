@@ -20,8 +20,8 @@ let authorToAdd = '';
 let resultSelected;
 let authorList = [];
 
-//const url = process.env.BASE_URL
-let url = 'http://localhost:8006'
+const url = process.env.BASE_URL
+//let url = 'http://localhost:8006'
 
 menu.addEventListener('click', (e) => {
 
