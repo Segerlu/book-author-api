@@ -16,7 +16,7 @@ CREATE TABLE books (
     title varchar(200),
     publish_year integer DEFAULT 0,
     page_count integer DEFAULT 0,
-    author_key varchar(50) REFERENCES authors
+    author_key varchar(50) REFERENCES authors ON DELETE CASCADE
 );
 
 INSERT INTO authors (id, name, birth_date, top_book, num_books_written) 

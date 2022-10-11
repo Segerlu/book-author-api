@@ -1,22 +1,24 @@
 let express = require('express');
 let app = express();
 let cors = require('cors')
-const PORT = 8006;
 
 app.use(express.json());
 app.use(cors());
 
 let { Client } = require('pg');
 // let client = new Client({
-//     host: 'localhost:5432',
-//     user: 'postgres',
-//     password: 'docker',
-//     database: 'booksauthorapidb',
-// });
+    //     host: 'localhost:5432',
+    //     user: 'postgres',
+    //     password: 'docker',
+    //     database: 'booksauthorapidb',
+    // });
+    
+const PORT = process.env.PORT || 8006;
+const CONNECT_STRING = process.env.CONNECT_STRING ||'postgresql://postgres:docker@127.0.0.1:5432/booksauthorapidb' 
 
 let client = new Client(
     {
-        connectionString : 'postgresql://postgres:docker@127.0.0.1:5432/booksauthorapidb'
+        connectionString : CONNECT_STRING
     }
 )
 
@@ -80,6 +82,24 @@ app.get('/authors/search/:key', (req, res)=> {
     })    
 })
 
+app.get('/authors/delete/:key', (req, res)=> {
+
+    let keySearch = req.params.key === -1 ? '' : req.params.key;   
+
+    console.log(keySearch)
+
+    client.query(`DELETE FROM authors WHERE name = '${keySearch}';`)
+    .then(data => {
+        console.log("author deleted")
+        res.send("author deleted")
+    })
+    .catch(er => {
+        console.log(er)
+        res.status(500)
+        res.send(er)
+    })    
+})
+
 app.post('/authors', (req, res) => {
     let author = req.body;
     let text = `INSERT INTO authors (id, name, birth_date, top_book, num_books_written) VALUES ($1, $2, $3, $4, $5);`
@@ -90,7 +110,8 @@ app.post('/authors', (req, res) => {
     client
     .query(text, values)
     .then(data => {
-        console.log(data.rows[0])
+        res.status(201)
+        res.send('')
     })
     .catch(e => console.error(e.stack))
 
@@ -106,6 +127,7 @@ app.post('/books', (req, res) => {
         client
         .query(text, values)
         .then(data => {
+            res.send("books updated")
     })
     .catch(e => console.error(e.stack)) 
     })
