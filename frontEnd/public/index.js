@@ -1,30 +1,173 @@
 let resultsDiv = document.getElementById('results');
 let search = document.getElementById('searchBook');
+let searchAuthor = document.getElementById('searchAuthor');
+let searchArea = document.getElementById('searchArea');
+let authorSearch = document.getElementById('authorSearch');
+let bookSearch = document.getElementById('bookSearch');
+let addAuthor = document.getElementById('addAuthor');
+let addBook = document.getElementById('addBook');
+let home = document.getElementById('home');
+let menu = document.getElementById('menuArea');
+let booksearchfields = document.getElementsByClassName('bookSearchfield');
+let authorsearchfields = document.getElementsByClassName('authorSearchfield');
+let homefields = document.getElementById('homeArea');
+let addAuthorButton = document.getElementById('addAuthorButton');
+let updateBooks = document.getElementById('updateAuthorsBooksButton');
+let authorToAdd = '';
+let resultSelected;
+let authorList = [];
 
-getAllBooks();
+menu.addEventListener('click', (e) => {
+
+    e.target !== menu ? switchTab(e.target.textContent) : false;
+})
+
+addAuthorButton.addEventListener('click', e => {
+    addNewAuthor(prompt("Name of the author you wish to add!"));
+})
+
+updateBooks.addEventListener('click', e => {
+    resultSelected ? addNewBooks(resultSelected) : false;
+})
+
+resultsDiv.addEventListener('click', e => {
+
+    if (e.target !== resultsDiv) {
+
+        resultSelected = e.target.parentElement;
+        for(let i = 0; i < resultsDiv.children.length; i++) {
+            resultsDiv.children[i].style.border = 'black solid 1px'
+            resultsDiv.children[i].style.backgroundColor = 'white'
+        }
+        resultSelected.style.border = 'black solid 3px'
+        resultSelected.style.backgroundColor = 'lightBlue'
+        console.log(resultSelected)
+    }
+})
+
+switchTab(home.textContent); 
 
 function switchTab(tab) {
 
     emptyResults(resultsDiv);
+    searchArea.style.display = 'none';
+    resultsDiv.style.display = 'none';
+    homefields.style.display = 'none';
 
-    
+    for (let i = 0; i < menu.children.length; i ++) {
+        menu.children[i].style.border = 'solid black 2px';
+    }
+
+    for(let i = 0; i < authorsearchfields.length;i++) {
+
+        authorsearchfields[i].style.display = 'none'
+    }
+    for(let i = 0; i < booksearchfields.length;i++) {
+
+        booksearchfields[i].style.display = 'none'
+    }
+
+    tab === 'Author Search' ? showAuthors() :
+    tab === 'Book Search' ? showBooks() :
+    tab === 'Add Author' ? showAddAuthor() :
+    tab === 'Add Book' ? showAddBook() : 
+    tab === 'Home' ? showHome() : console.log(tab);
 
 }
 
+function showHome() {
+    home.style.border = 'solid black 4px';
+    homefields.style.display = 'block';
+}
+
 function showAuthors() {
+
+    for(let i = 0; i < authorsearchfields.length;i++) {
+
+        authorsearchfields[i].style.display = 'flex'
+    }
+
+    authorSearch.style.border = 'solid black 4px';
+
+    searchArea.style.display = 'flex';
+    resultsDiv.style.display = 'grid';
+
+    getAllAuthors();
 
 }
 
 function showBooks() {
 
+    for(let i = 0; i < booksearchfields.length;i++) {
+
+        booksearchfields[i].style.display = 'flex'
+        }
+
+    bookSearch.style.border = 'solid black 4px';
+
+    searchArea.style.display = 'flex';
+    resultsDiv.style.display = 'grid';
+        getAllBooks();
+
 }
 
-function showAddAuthor() {
+function addNewAuthor(authorToAdd) {
 
+    if (authorList.includes(authorToAdd.toLowerCase())) {
+        alert("This author is already in the database!")
+        return;
+    }
+    console.log("authors: ", authorList)
+
+    fetch(`https://openlibrary.org/search/authors.json?q=${authorToAdd}`)
+    .then(author => author.json())
+    .then(details => {
+    
+        fetch('http://localhost:8006/authors', {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                key:details.docs[0].key,
+                name:details.docs[0].name,
+                birth_date:details.docs[0].birth_date,
+                top_work:details.docs[0].top_work,
+                work_count:details.docs[0].work_count
+            })
+        })
+        .then(stuff => {
+            console.log(stuff)
+        })
+        .catch(er => {
+            console.log(er);
+        })
+    })    
 }
 
-function showAddBook() {
+function addNewBooks() {
 
+    fetch(`https://openlibrary.org/search.json?author=${resultSelected.firstChild.textContent}&fields=title,first_publish_year,number_of_pages_median,author_key&key`)
+    .then(author => author.json())
+    .then(details => {
+    
+        fetch('http://localhost:8006/books', {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(details.docs)
+        })
+        .then(stuff => {
+            console.log(stuff)
+            alert(`${details.length} books have been added to the database!`)
+        })
+        .catch(er => {
+            console.log(er);
+        })
+    })    
 }
 
 async function getAllBooks() {
@@ -34,7 +177,20 @@ async function getAllBooks() {
     emptyResults(resultsDiv);
 
     books.forEach(book => {
-        createResultCard(book, resultsDiv);
+        createResultCardBook(book, resultsDiv);
+    });
+}
+
+async function getAllAuthors() {
+    authorList = [];
+    let data = await fetch('http://localhost:8006/authors');
+    let authors = await data.json();
+
+    emptyResults(resultsDiv);
+
+    authors.forEach(author => {
+        authorList.push(author.name.toLowerCase());
+        createResultCardAuthor(author, resultsDiv);
     });
 }
 
@@ -48,7 +204,21 @@ async function searchBooks() {
     emptyResults(resultsDiv);
 
     books.forEach(book => {
-        createResultCard(book, resultsDiv);
+        createResultCardBook(book, resultsDiv);
+    });
+}
+
+async function searchAuthors() {
+
+    let keyWord = searchAuthor.value === '' ? -1 : searchAuthor.value;
+
+    let data = await fetch('http://localhost:8006/authors/search/' + keyWord);
+    let books = await data.json();
+
+    emptyResults(resultsDiv);
+
+    books.forEach(book => {
+        createResultCardAuthor(book, resultsDiv);
     });
 }
 
@@ -58,7 +228,35 @@ function emptyResults(parent) {
     }
 }
 
-function createResultCard(data, parent) {
+function createResultCardAuthor(data, parent) {
+
+    let overlay = document.createElement("div");
+    overlay.classList.add("overlay");
+
+    let resultsCard = document.createElement("span");
+    resultsCard.classList.add("result-card");
+
+    let name = document.createElement("h1");
+    name.classList.add("name");
+    name.textContent = data.name;
+
+    let birth_date = document.createElement("h2");
+    birth_date.classList.add("birth_date");
+    birth_date.textContent = "Born: " + data.birth_date;
+
+    let top_book = document.createElement("h2");
+    top_book.classList.add("top_book");
+    top_book.textContent = "Top Book: " + data.top_book;
+
+    let num_books_written = document.createElement("h2");
+    num_books_written.classList.add("num_books_written");
+    num_books_written.textContent = "Number of books written: " + data.num_books_written;
+
+    resultsCard.append(name, birth_date, top_book, num_books_written, overlay);
+    parent.appendChild(resultsCard);
+}
+
+function createResultCardBook(data, parent) {
 
     let overlay = document.createElement("div");
     overlay.classList.add("overlay");

@@ -14,8 +14,8 @@ DROP TABLE IF EXISTS books CASCADE;
 CREATE TABLE books (
     id serial PRIMARY KEY,
     title varchar(200),
-    publish_year integer,
-    page_count integer,
+    publish_year integer DEFAULT 0,
+    page_count integer DEFAULT 0,
     author_key varchar(50) REFERENCES authors
 );
 
