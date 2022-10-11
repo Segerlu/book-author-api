@@ -173,7 +173,7 @@ function addNewAuthor(authorToAdd) {
 function deleteAuthor() {
     let author = resultSelected.firstChild.textContent;
 
-    fetch(url + '/authors/delete/${author}`)
+    fetch(url + `/authors/delete/${author}`)
         .then((response) => console.log(response))
         .catch(er => console.log(er))
 }
