@@ -224,7 +224,7 @@ function getAllAuthors() {
             emptyResults(resultsDiv);
 
             if (authors.length > 0) {
-
+                console.log(authors)
                 authors.forEach(author => {
                     authorList.push(author.name.toLowerCase());
                     createResultCardAuthor(author, resultsDiv);
