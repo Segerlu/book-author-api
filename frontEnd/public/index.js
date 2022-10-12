@@ -201,11 +201,13 @@ function addNewBooks() {
         .catch(e => console.log(e))
 }
 
-async function getAllBooks() {
-    let data = await fetch(url + '/books');
-    let books = await data.json();
-
-    emptyResults(resultsDiv);
+function getAllBooks() {
+    fetch(url + '/books')
+    .then(data => {
+        return data.json();
+    })
+    .then(books => {
+        emptyResults(resultsDiv);
 
     if (books.length > 0) {
         books.forEach(book => {
@@ -214,6 +216,10 @@ async function getAllBooks() {
     } else {
         createEmptyResultCard(resultsDiv)
     }
+    })
+    .catch(e => console.log(e))
+
+    
 }
 
 function getAllAuthors() {
@@ -237,15 +243,17 @@ function getAllAuthors() {
         .catch(e => console.log(e))
 }
 
-async function searchBooks() {
+function searchBooks() {
 
     let keyWord = search.value === '' ? -1 : search.value;
     search.value = "";
 
-    let data = await fetch(url + '/books/search/' + keyWord);
-    let books = await data.json();
-
-    emptyResults(resultsDiv);
+    fetch(url + '/books/search/' + keyWord)
+    .then(data => {
+        return data.json();
+    })
+    .then(books => {
+        emptyResults(resultsDiv);
 
     if (books.length > 0) {
         books.forEach(book => {
@@ -254,25 +262,32 @@ async function searchBooks() {
     } else {
         createEmptyResultCard(resultsDiv)
     }
+    })
+    .catch(e => console.log(e))
 }
 
-async function searchAuthors() {
+function searchAuthors() {
 
     let keyWord = searchAuthor.value === '' ? -1 : searchAuthor.value;
     searchAuthor.value = ""
 
-    let data = await fetch(url + '/authors/search/' + keyWord);
-    let authors = await data.json();
+    fetch(url + '/authors/search/' + keyWord)
+    .then(data => data.json())
+        .then(authors => {
+            emptyResults(resultsDiv);
 
-    emptyResults(resultsDiv);
+            if (authors.length > 0) {
+                console.log(authors)
+                authors.forEach(author => {
+                    authorList.push(author.name.toLowerCase());
+                    createResultCardAuthor(author, resultsDiv);
+                });
+            } else {
 
-    if (authors.length > 0) {
-        authors.forEach(author => {
-            createResultCardBook(author, resultsDiv);
-        });
-    } else {
-        createEmptyResultCard(resultsDiv)
-    }
+                createEmptyResultCard(resultsDiv)
+            }
+        })
+        .catch(e => console.log(e))
 }
 
 function emptyResults(parent) {
