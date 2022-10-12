@@ -166,6 +166,7 @@ function addNewAuthor(authorToAdd) {
                     console.log(er);
                 })
         })
+        .catch(e => console.log(e))
 }
 
 function deleteAuthor() {
@@ -197,6 +198,7 @@ function addNewBooks() {
                     console.log(er);
                 })
         })
+        .catch(e => console.log(e))
 }
 
 async function getAllBooks() {
@@ -231,7 +233,8 @@ function getAllAuthors() {
 
                 createEmptyResultCard(resultsDiv)
             }
-        });
+        })
+        .catch(e => console.log(e))
 }
 
 async function searchBooks() {
