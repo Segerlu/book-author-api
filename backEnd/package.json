@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:deploy" : "node expressApiServer.js"
+    "start" : "node expressApiServer.js"
   },
   "author": "",
   "license": "ISC",
