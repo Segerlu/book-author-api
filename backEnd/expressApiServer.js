@@ -7,98 +7,98 @@ app.use(cors());
 
 let { Client } = require('pg');
 // let client = new Client({
-    //     host: 'localhost:5432',
-    //     user: 'postgres',
-    //     password: 'docker',
-    //     database: 'booksauthorapidb',
-    // });
-    
+//     host: 'localhost:5432',
+//     user: 'postgres',
+//     password: 'docker',
+//     database: 'booksauthorapidb',
+// });
+
 const PORT = process.env.PORT //|| 8006;
-const CONNECT_STRING = process.env.CONNECT_STRING+'?ssl=true' //||'postgresql://postgres:docker@127.0.0.1:5432/booksauthorapidb'
-console.log(process.env.CONNECT_STRING+'?ssl=true') 
+const CONNECT_STRING = process.env.CONNECT_STRING + '?ssl=true' //||'postgresql://postgres:docker@127.0.0.1:5432/booksauthorapidb'
+console.log(process.env.CONNECT_STRING + '?ssl=true')
 
 let client = new Client(
     {
-        connectionString : CONNECT_STRING
+        connectionString: CONNECT_STRING
     }
 )
 
 client.connect();
 
-app.get('/books', (req, res)=> {
+app.get('/books', (req, res) => {
 
     client.query('SELECT * FROM books JOIN authors ON authors.id = books.author_key ORDER BY title LIMIT 100;')
-    .then(data => {
-        console.log("request received")
-        res.send(data.rows)
-    })
-    .catch(er => {
-        console.log(er)
-        res.send(er)
-    })
-    
+        .then(data => {
+            console.log("request received")
+            res.send(data.rows)
+        })
+        .catch(er => {
+            console.log(er)
+            res.send(er)
+        })
+
 })
 
-app.get('/books/search/:key', (req, res)=> {
+app.get('/books/search/:key', (req, res) => {
 
-    let keySearch = req.params.key === -1 ? 'e' : req.params.key;   
+    let keySearch = req.params.key === -1 ? 'e' : req.params.key;
 
     client.query(`SELECT * FROM books JOIN authors ON authors.id = books.author_key WHERE title ILIKE '%${keySearch}%' ORDER BY title LIMIT 100;`)
-    .then(data => {
-        console.log("request received")
-        res.send(data.rows)
-    })
-    .catch(er => {
-        console.log(er)
-        res.send(er)
-    })    
+        .then(data => {
+            console.log("request received")
+            res.send(data.rows)
+        })
+        .catch(er => {
+            console.log(er)
+            res.send(er)
+        })
 })
 
-app.get('/authors', (req, res)=> {
+app.get('/authors', (req, res) => {
 
     client.query('SELECT * FROM authors ORDER BY name LIMIT 100;')
-    .then(data => {
-        console.log("request received")
-        res.send(data.rows)
-    })
-    .catch(er => {
-        console.log(er)
-        res.send(er)
-    })
-    
+        .then(data => {
+            console.log("request received")
+            res.send(data.rows)
+        })
+        .catch(er => {
+            console.log(er)
+            res.send(er)
+        })
+
 })
 
-app.get('/authors/search/:key', (req, res)=> {
+app.get('/authors/search/:key', (req, res) => {
 
-    let keySearch = req.params.key === -1 ? 'e' : req.params.key;   
+    let keySearch = req.params.key === -1 ? 'e' : req.params.key;
 
     client.query(`SELECT * FROM authors WHERE name ILIKE '%${keySearch}%' ORDER BY name LIMIT 100;`)
-    .then(data => {
-        console.log("request received")
-        res.send(data.rows)
-    })
-    .catch(er => {
-        console.log(er)
-        res.send(er)
-    })    
+        .then(data => {
+            console.log("request received")
+            res.send(data.rows)
+        })
+        .catch(er => {
+            console.log(er)
+            res.send(er)
+        })
 })
 
-app.get('/authors/delete/:key', (req, res)=> {
+app.get('/authors/delete/:key', (req, res) => {
 
-    let keySearch = req.params.key === -1 ? '' : req.params.key;   
+    let keySearch = req.params.key === -1 ? '' : req.params.key;
 
     console.log(keySearch)
 
     client.query(`DELETE FROM authors WHERE name = '${keySearch}';`)
-    .then(data => {
-        console.log("author deleted")
-        res.send("author deleted")
-    })
-    .catch(er => {
-        console.log(er)
-        res.status(500)
-        res.send(er)
-    })    
+        .then(data => {
+            console.log("author deleted")
+            res.send("author deleted")
+        })
+        .catch(er => {
+            console.log(er)
+            res.status(500)
+            res.send(er)
+        })
 })
 
 app.post('/authors', (req, res) => {
@@ -109,12 +109,14 @@ app.post('/authors', (req, res) => {
     console.log(author)
 
     client
-    .query(text, values)
-    .then(data => {
-        res.status(201)
-        res.send('')
-    })
-    .catch(e => console.error(e.stack))
+        .query(text, values)
+        .then(data => {
+            res.status(201)
+            res.send('')
+        })
+        .catch(e => {
+            console.error(e.stack)
+        })
 
 })
 
@@ -126,13 +128,15 @@ app.post('/books', (req, res) => {
         let values = [book.title, book.first_publish_year, book.number_of_pages_median, book.author_key[0]]
 
         client
-        .query(text, values)
-        .then(data => {
-            res.send("books updated")
+            .query(text, values)
+            .then(data => {
+                res.send("books updated")
+            })
+            .catch(e => {
+                console.error(e.stack)
+            })
     })
-    .catch(e => console.error(e.stack)) 
-    })
-    
+
 
 })
 

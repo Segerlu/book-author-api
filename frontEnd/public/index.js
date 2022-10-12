@@ -166,7 +166,9 @@ function addNewAuthor(authorToAdd) {
                     console.log(er);
                 })
         })
-        .catch(e => console.log(e))
+        .catch(e => {
+            console.log(e)
+        })
 }
 
 function deleteAuthor() {
@@ -174,7 +176,9 @@ function deleteAuthor() {
 
     fetch(url + `/authors/delete/${author}`)
         .then((response) => console.log(response))
-        .catch(er => console.log(er))
+        .catch(er => {
+            console.log(er)
+        })
 }
 
 function addNewBooks() {
@@ -198,7 +202,9 @@ function addNewBooks() {
                     console.log(er);
                 })
         })
-        .catch(e => console.log(e))
+        .catch(e => {
+            console.log(e)
+        })
 }
 
 function getAllBooks() {
@@ -217,7 +223,9 @@ function getAllBooks() {
         createEmptyResultCard(resultsDiv)
     }
     })
-    .catch(e => console.log(e))
+    .catch(e => {
+        console.log(e)
+    })
 
     
 }
@@ -240,7 +248,9 @@ function getAllAuthors() {
                 createEmptyResultCard(resultsDiv)
             }
         })
-        .catch(e => console.log(e))
+        .catch(e => {
+            console.log(e)
+        })
 }
 
 function searchBooks() {
@@ -263,7 +273,9 @@ function searchBooks() {
         createEmptyResultCard(resultsDiv)
     }
     })
-    .catch(e => console.log(e))
+    .catch(e => {
+        console.log(e)
+    })
 }
 
 function searchAuthors() {
@@ -287,7 +299,9 @@ function searchAuthors() {
                 createEmptyResultCard(resultsDiv)
             }
         })
-        .catch(e => console.log(e))
+        .catch(e => {
+            console.log(e)
+        })
 }
 
 function emptyResults(parent) {
