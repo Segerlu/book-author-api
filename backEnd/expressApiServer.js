@@ -26,9 +26,9 @@ app.get('/books', (req, res) => {
             console.log("request received")
             res.send(data.rows)
         })
-        .catch(er => {
-            console.log(er)
-            res.send(er)
+        .catch(error => {
+            console.log(error)
+            res.send(error)
         })
 
 })
@@ -42,9 +42,9 @@ app.get('/books/search/:key', (req, res) => {
             console.log("request received")
             res.send(data.rows)
         })
-        .catch(er => {
-            console.log(er)
-            res.send(er)
+        .catch(error => {
+            console.log(error)
+            res.send(error)
         })
 })
 
@@ -55,9 +55,9 @@ app.get('/authors', (req, res) => {
             console.log("request received")
             res.send(data.rows)
         })
-        .catch(er => {
-            console.log("issue in author search", er)
-            res.send(er)
+        .catch(error => {
+            console.log("issue in author search", error)
+            res.send(error)
         })
 
 })
@@ -71,9 +71,9 @@ app.get('/authors/search/:key', (req, res) => {
             console.log("request received")
             res.send(data.rows)
         })
-        .catch(er => {
-            console.log(er)
-            res.send(er)
+        .catch(error => {
+            console.log(error)
+            res.send(error)
         })
 })
 
@@ -88,10 +88,10 @@ app.get('/authors/delete/:key', (req, res) => {
             console.log("author deleted")
             res.send("author deleted")
         })
-        .catch(er => {
-            console.log(er)
+        .catch(error => {
+            console.log(error)
             res.status(500)
-            res.send(er)
+            res.send(error)
         })
 })
 
@@ -108,8 +108,8 @@ app.post('/authors', (req, res) => {
             res.status(201)
             res.send('')
         })
-        .catch(e => {
-            console.error(e.stack)
+        .catch(error => {
+            console.log(error)
         })
 
 })
@@ -126,8 +126,8 @@ app.post('/books', (req, res) => {
             .then(data => {
                 res.send("books updated")
             })
-            .catch(e => {
-                console.error(e.stack)
+            .catch(error => {
+                console.log(error)
             })
     })
 
