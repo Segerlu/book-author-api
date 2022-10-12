@@ -13,7 +13,10 @@ console.log(CONNECT_STRING)
 
 let client = new Client(
     {
-        connectionString: CONNECT_STRING
+        connectionString: CONNECT_STRING,
+        ssl: {
+            rejectUnauthorized: false
+        }
     }
 )
 
