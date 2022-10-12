@@ -20,7 +20,7 @@ let authorToAdd = '';
 let resultSelected;
 let authorList = [];
 
-const url = 'https://bookauthorsearchbackend.onrender.com'
+const url = 'https://booksearchapi.onrender.com'
 //let url = 'http://localhost:8006'
 
 menu.addEventListener('click', (e) => {
