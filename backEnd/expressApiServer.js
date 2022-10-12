@@ -7,8 +7,10 @@ app.use(cors());
 
 let { Client } = require('pg');
 
-const PORT = process.env.PORT ? process.env.PORT : 8006;
-const CONNECT_STRING = process.env.CONNECT_STRING ? process.env.CONNECT_STRING + '?ssl=true' :'postgresql://postgres:docker@127.0.0.1:5432/booksauthorapidb'
+//const PORT = process.env.PORT ? process.env.PORT : 8006;
+const PORT = prcess.env.PORT;
+//const CONNECT_STRING = process.env.CONNECT_STRING ? process.env.CONNECT_STRING + '?ssl=true' :'postgresql://postgres:docker@127.0.0.1:5432/booksauthorapidb'
+const CONNECT_STRING = process.env.CONNECT_STRING
 console.log(CONNECT_STRING)
 
 let client = new Client(
