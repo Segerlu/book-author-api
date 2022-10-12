@@ -23,7 +23,7 @@ let authorList = [];
 const url = 'https://booksearchapi.onrender.com'
 //let url = 'http://localhost:8006'
 
-menu.addEventListener('click', (e) => {
+menu.addEventListener('click', (error) => {
 
     e.target !== menu ? switchTab(e.target.textContent) : false;
 })
@@ -162,22 +162,28 @@ function addNewAuthor(authorToAdd) {
                     console.log("Added new author")
                     getAllAuthors();
                 })
-                .catch(er => {
-                    console.log(er);
+                .catch(error => {
+                    console.log(error);
                 })
         })
-        .catch(e => {
-            console.log(e)
+        .catch(error => {
+            console.log(error)
         })
 }
 
 function deleteAuthor() {
     let author = resultSelected.firstChild.textContent;
 
-    fetch(url + `/authors/delete/${author}`)
+    fetch(url + `/authors/delete/${author}`, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
         .then((response) => console.log(response))
-        .catch(er => {
-            console.log(er)
+        .catch(error => {
+            console.log(error)
         })
 }
 
@@ -198,17 +204,23 @@ function addNewBooks() {
                 .then(stuff => {
                     alert(`${details.docs.length} books have been added to the database!`)
                 })
-                .catch(er => {
-                    console.log(er);
+                .catch(error => {
+                    console.log(error);
                 })
         })
-        .catch(e => {
-            console.log(e)
+        .catch(error => {
+            console.log(error)
         })
 }
 
 function getAllBooks() {
-    fetch(url + '/books')
+    fetch(url + '/books', {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
     .then(data => {
         return data.json();
     })
@@ -223,8 +235,8 @@ function getAllBooks() {
         createEmptyResultCard(resultsDiv)
     }
     })
-    .catch(e => {
-        console.log(e)
+    .catch(error => {
+        console.log(error)
     })
 
     
@@ -232,7 +244,13 @@ function getAllBooks() {
 
 function getAllAuthors() {
     authorList = [];
-    fetch(url + '/authors')
+    fetch(url + '/authors', {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
         .then(data => data.json())
         .then(authors => {
             emptyResults(resultsDiv);
@@ -248,8 +266,8 @@ function getAllAuthors() {
                 createEmptyResultCard(resultsDiv)
             }
         })
-        .catch(e => {
-            console.log(e)
+        .catch(error => {
+            console.log(error)
         })
 }
 
@@ -258,7 +276,13 @@ function searchBooks() {
     let keyWord = search.value === '' ? -1 : search.value;
     search.value = "";
 
-    fetch(url + '/books/search/' + keyWord)
+    fetch(url + '/books/search/' + keyWord, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
     .then(data => {
         return data.json();
     })
@@ -273,8 +297,8 @@ function searchBooks() {
         createEmptyResultCard(resultsDiv)
     }
     })
-    .catch(e => {
-        console.log(e)
+    .catch(error => {
+        console.log(error)
     })
 }
 
@@ -283,7 +307,13 @@ function searchAuthors() {
     let keyWord = searchAuthor.value === '' ? -1 : searchAuthor.value;
     searchAuthor.value = ""
 
-    fetch(url + '/authors/search/' + keyWord)
+    fetch(url + '/authors/search/' + keyWord, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
     .then(data => data.json())
         .then(authors => {
             emptyResults(resultsDiv);
@@ -299,8 +329,8 @@ function searchAuthors() {
                 createEmptyResultCard(resultsDiv)
             }
         })
-        .catch(e => {
-            console.log(e)
+        .catch(error => {
+            console.log(error)
         })
 }
 

@@ -111,7 +111,7 @@ app.post('/authors', (req, res) => {
         .query(text, values)
         .then(data => {
             res.status(201)
-            res.send('')
+            res.send('Author Added')
         })
         .catch(error => {
             console.log(error)
