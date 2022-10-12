@@ -56,7 +56,7 @@ app.get('/authors', (req, res) => {
             res.send(data.rows)
         })
         .catch(er => {
-            console.log(er)
+            console.log("issue in author search", er)
             res.send(er)
         })
 
