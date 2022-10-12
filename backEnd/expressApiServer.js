@@ -7,9 +7,9 @@ app.use(cors());
 
 let { Client } = require('pg');
 
-const PORT = process.env.PORT || 8006;
-const CONNECT_STRING = process.env.CONNECT_STRING + '?ssl=true' ||'postgresql://postgres:docker@127.0.0.1:5432/booksauthorapidb'
-console.log(process.env.CONNECT_STRING + '?ssl=true,rejectUnauthorized=false')
+const PORT = process.env.PORT ? process.env.PORT : 8006;
+const CONNECT_STRING = process.env.CONNECT_STRING ? process.env.CONNECT_STRING + '?ssl=true' :'postgresql://postgres:docker@127.0.0.1:5432/booksauthorapidb'
+console.log(CONNECT_STRING)
 
 let client = new Client(
     {
@@ -21,7 +21,7 @@ client.connect();
 
 app.get('/books', (req, res) => {
 
-    client.query('SELECT * FROM books JOIN authors ON authors.id = books.author_key ORDER BY title LIMIT 100;')
+    client.query('SELECT * FROM books JOIN authors ON authors.id = books.author_key ORDER BY title LIMIT 10;')
         .then(data => {
             console.log("request received")
             res.send(data.rows)
@@ -37,7 +37,7 @@ app.get('/books/search/:key', (req, res) => {
 
     let keySearch = req.params.key === -1 ? 'e' : req.params.key;
 
-    client.query(`SELECT * FROM books JOIN authors ON authors.id = books.author_key WHERE title ILIKE '%${keySearch}%' ORDER BY title LIMIT 100;`)
+    client.query(`SELECT * FROM books JOIN authors ON authors.id = books.author_key WHERE title ILIKE '%${keySearch}%' ORDER BY title LIMIT 10;`)
         .then(data => {
             console.log("request received")
             res.send(data.rows)
@@ -50,7 +50,7 @@ app.get('/books/search/:key', (req, res) => {
 
 app.get('/authors', (req, res) => {
 
-    client.query('SELECT * FROM authors ORDER BY name LIMIT 100;')
+    client.query('SELECT * FROM authors ORDER BY name LIMIT 10;')
         .then(data => {
             console.log("request received")
             res.send(data.rows)
@@ -66,7 +66,7 @@ app.get('/authors/search/:key', (req, res) => {
 
     let keySearch = req.params.key === -1 ? 'e' : req.params.key;
 
-    client.query(`SELECT * FROM authors WHERE name ILIKE '%${keySearch}%' ORDER BY name LIMIT 100;`)
+    client.query(`SELECT * FROM authors WHERE name ILIKE '%${keySearch}%' ORDER BY name LIMIT 10;`)
         .then(data => {
             console.log("request received")
             res.send(data.rows)
