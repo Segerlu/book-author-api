@@ -6,16 +6,10 @@ app.use(express.json());
 app.use(cors());
 
 let { Client } = require('pg');
-// let client = new Client({
-//     host: 'localhost:5432',
-//     user: 'postgres',
-//     password: 'docker',
-//     database: 'booksauthorapidb',
-// });
 
-const PORT = process.env.PORT //|| 8006;
-const CONNECT_STRING = process.env.CONNECT_STRING + '?ssl=true' //||'postgresql://postgres:docker@127.0.0.1:5432/booksauthorapidb'
-console.log(process.env.CONNECT_STRING + '?ssl=true')
+const PORT = process.env.PORT || 8006;
+const CONNECT_STRING = process.env.CONNECT_STRING + '?ssl=true' ||'postgresql://postgres:docker@127.0.0.1:5432/booksauthorapidb'
+console.log(process.env.CONNECT_STRING + '?ssl=true,rejectUnauthorized=false')
 
 let client = new Client(
     {
